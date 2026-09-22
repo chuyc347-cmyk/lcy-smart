@@ -601,7 +601,10 @@ function rewriteParts(text){
   function found(re){ var m = text.match(re); return m ? m[0].trim() : null; }
   var tless = stripTime(text);
   var nums = (tless.match(RE.percent) || []).concat(tless.match(RE.money) || [], tless.match(RE.numUnit) || []);
-  var baseline = null, target = nums.length ? nums[0] : null;
+  /* 只有在句子真的寫了「提升至…」這類變化結構時,才把偵測到的數字當成目標值;
+     里程碑型目標(完成上線、取得認證)沒有目標值,留空讓學員自己填。 */
+  var hasChange = RE.changeTo.test(text) || RE.baselineTarget.test(text);
+  var baseline = null, target = (hasChange && nums.length) ? nums[0] : null;
 
   /* 有「由 A 提升至 B」結構時,A 是現況值、B 才是目標值 */
   var bt = btValues(text);
