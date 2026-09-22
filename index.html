@@ -454,11 +454,13 @@ function evalM(text){
     ev.push({label:"數值(無單位)", items:[(bare.baseline||"?") + " → " + (bare.target||"?")]});
     tips.push("目標值是沒有單位的數值(如 FR 值、能耗指數):請在面談時確認計算口徑與資料來源,避免雙方認知不同。");
   }
-  if(!pct.length && !units.length && !money.length && !mets.length && !bare){
+  if(!pct.length && !units.length && !money.length && !bare){
     if(milestone){
       score += 32;
       ev.push({label:"里程碑型目標", items:["以「完成/上線/取得」驗收"]});
       tips.push("屬里程碑型(質化)目標:請明訂「完成」的驗收標準 — 由誰驗收、包含哪些範圍、品質標準為何。");
+    } else if(mets.length){
+      tips.push("有寫出指標(" + mets.slice(0,2).join("、") + ")但沒有目標值。請補上現況值與目標值,例如「由 A 提升至 B」。");
     } else {
       tips.push("找不到任何數字、指標或可驗收的交付物。請補上指標名稱與目標值,或明訂交付物與驗收標準。");
     }
